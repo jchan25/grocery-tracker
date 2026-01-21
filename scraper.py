@@ -1,6 +1,6 @@
 import re
-import time
-from playwright.sync_api import sync_playwright
+import requests
+from bs4 import BeautifulSoup
 from dataclasses import dataclass
 from typing import Optional
 
@@ -28,7 +28,8 @@ def is_valid_url(url: str) -> bool:
     """Check if URL is a valid Whole Foods or Amazon Whole Foods URL"""
     if not url:
         return False
-    return 'wholefoodsmarket.com' in url or ('amazon.com' in url and 'wholefoods' in url.lower())
+    url_lower = url.lower()
+    return 'wholefoodsmarket.com' in url_lower or ('amazon.com' in url_lower and 'wholefoods' in url_lower)
 
 def scrape_whole_foods_price(url: str) -> PriceInfo:
     """
@@ -44,134 +45,116 @@ def scrape_whole_foods_price(url: str) -> PriceInfo:
             error="Invalid URL. Use a wholefoodsmarket.com or Amazon Whole Foods URL"
         )
 
-    is_amazon = 'amazon.com' in url
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+    }
 
     try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            context = browser.new_context(
-                user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            )
-            page = context.new_page()
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
 
-            # Navigate to the product page
-            page.goto(url, wait_until='networkidle', timeout=30000)
-            time.sleep(2)  # Allow dynamic content to load
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-            price = None
-            regular_price = None
-            on_sale = False
-            product_name = None
+        is_amazon = 'amazon.com' in url.lower()
+        price = None
+        regular_price = None
+        on_sale = False
+        product_name = None
 
-            # Try to get product name
-            try:
-                if is_amazon:
-                    name_elem = page.query_selector('#productTitle, #title, h1#title span')
-                else:
-                    name_elem = page.query_selector('h1[data-testid="product-title"], h1.product-name, h1')
-                if name_elem:
-                    product_name = name_elem.inner_text().strip()
-            except:
-                pass
+        if is_amazon:
+            # Get product name
+            title_elem = soup.find('span', {'id': 'productTitle'})
+            if title_elem:
+                product_name = title_elem.get_text().strip()
 
-            # Try multiple selectors for price
-            if is_amazon:
-                # Amazon price selectors
-                price_selectors = [
-                    '.a-price .a-offscreen',
-                    '#priceblock_ourprice',
-                    '#priceblock_dealprice',
-                    '.a-price-whole',
-                    '#corePrice_feature_div .a-offscreen',
-                    '#corePriceDisplay_desktop_feature_div .a-offscreen',
-                    'span.a-price span.a-offscreen',
-                    '[data-a-color="price"] .a-offscreen',
-                ]
-            else:
-                # Whole Foods direct site selectors
-                price_selectors = [
-                    '[data-testid="product-price"]',
-                    '.price-value',
-                    '.product-price',
-                    '.regular-price',
-                    '[class*="price"]',
-                    '.w-price',
-                ]
+            # Try multiple price selectors for Amazon
+            # Method 1: Look for price in corePrice section
+            core_price = soup.find('div', {'id': 'corePrice_feature_div'})
+            if core_price:
+                price_span = core_price.find('span', {'class': 'a-offscreen'})
+                if price_span:
+                    price = extract_price(price_span.get_text())
 
-            for selector in price_selectors:
-                try:
-                    price_elem = page.query_selector(selector)
-                    if price_elem:
-                        price_text = price_elem.inner_text()
-                        extracted = extract_price(price_text)
-                        if extracted:
-                            price = extracted
-                            break
-                except:
-                    continue
+            # Method 2: Look for apex price
+            if not price:
+                apex_price = soup.find('span', {'id': 'priceblock_ourprice'})
+                if apex_price:
+                    price = extract_price(apex_price.get_text())
 
-            # Check for sale price indicators
-            if is_amazon:
-                sale_selectors = [
-                    '.a-text-price .a-offscreen',  # Strikethrough price on Amazon
-                    '#priceblock_saleprice',
-                    '.savingsPercentage',
-                    '[data-a-strike="true"]',
-                ]
-            else:
-                sale_selectors = [
-                    '[data-testid="sale-price"]',
-                    '.sale-price',
-                    '.promo-price',
-                    '[class*="sale"]',
-                    '.was-price',
-                ]
+            # Method 3: Look for any a-price span
+            if not price:
+                price_elem = soup.find('span', {'class': 'a-price'})
+                if price_elem:
+                    offscreen = price_elem.find('span', {'class': 'a-offscreen'})
+                    if offscreen:
+                        price = extract_price(offscreen.get_text())
 
-            for selector in sale_selectors:
-                try:
-                    sale_elem = page.query_selector(selector)
-                    if sale_elem:
+            # Method 4: Search for price pattern in page
+            if not price:
+                # Look for price in the whole page text
+                price_pattern = re.search(r'\$(\d+\.?\d*)', response.text)
+                if price_pattern:
+                    price = float(price_pattern.group(1))
+
+            # Check for sale
+            was_price = soup.find('span', {'class': 'a-text-price'})
+            if was_price:
+                was_offscreen = was_price.find('span', {'class': 'a-offscreen'})
+                if was_offscreen:
+                    regular = extract_price(was_offscreen.get_text())
+                    if regular and price and regular > price:
                         on_sale = True
-                        # Try to find the original/regular price
-                        was_price_elem = page.query_selector('.was-price, .original-price, [class*="regular"]')
-                        if was_price_elem:
-                            regular_price = extract_price(was_price_elem.inner_text())
-                        break
-                except:
-                    continue
+                        regular_price = regular
 
-            # Check page content for sale indicators
-            try:
-                page_content = page.content().lower()
-                if 'sale' in page_content or 'deal' in page_content or 'save' in page_content:
-                    if not on_sale:
-                        # Double-check by looking for strikethrough prices
-                        strike_elem = page.query_selector('s, strike, del, [style*="line-through"]')
-                        if strike_elem:
-                            on_sale = True
-                            regular_price = extract_price(strike_elem.inner_text())
-            except:
-                pass
+            savings = soup.find('span', {'class': 'savingsPercentage'})
+            if savings:
+                on_sale = True
 
-            browser.close()
+        else:
+            # Whole Foods Market website
+            title_elem = soup.find('h1')
+            if title_elem:
+                product_name = title_elem.get_text().strip()
 
-            if price is None:
-                return PriceInfo(
-                    price=None,
-                    regular_price=None,
-                    on_sale=False,
-                    product_name=product_name,
-                    error="Could not extract price from page. The page structure may have changed."
-                )
+            price_elem = soup.find(attrs={'data-testid': 'product-price'})
+            if price_elem:
+                price = extract_price(price_elem.get_text())
 
+            if not price:
+                price_elem = soup.find(class_=re.compile('price'))
+                if price_elem:
+                    price = extract_price(price_elem.get_text())
+
+        if price is None:
             return PriceInfo(
-                price=price,
-                regular_price=regular_price if on_sale else price,
-                on_sale=on_sale,
+                price=None,
+                regular_price=None,
+                on_sale=False,
                 product_name=product_name,
-                error=None
+                error="Could not extract price. The website may require JavaScript or is blocking automated access."
             )
 
+        return PriceInfo(
+            price=price,
+            regular_price=regular_price if on_sale else price,
+            on_sale=on_sale,
+            product_name=product_name,
+            error=None
+        )
+
+    except requests.RequestException as e:
+        return PriceInfo(
+            price=None,
+            regular_price=None,
+            on_sale=False,
+            product_name=None,
+            error=f"Failed to fetch page: {str(e)}"
+        )
     except Exception as e:
         return PriceInfo(
             price=None,
@@ -186,6 +169,7 @@ def check_all_prices(items: list) -> dict:
     Check prices for a list of items with Whole Foods URLs.
     Returns a dict mapping item_id to PriceInfo.
     """
+    import time
     results = {}
     for item in items:
         if item.get('whole_foods_url'):
@@ -195,7 +179,6 @@ def check_all_prices(items: list) -> dict:
     return results
 
 if __name__ == "__main__":
-    # Test with a sample URL
     test_url = input("Enter a Whole Foods product URL to test: ").strip()
     if test_url:
         print("Scraping...")

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grocery Tracker - Whole Foods Price Monitor</title>
+    <title>Grocery Tracker</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -33,68 +33,31 @@
         .header {
             background: linear-gradient(135deg, #1a5f2a 0%, #2d8f4e 100%);
             color: white;
-            padding: 30px;
+            padding: 25px;
         }
 
         .header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
+            font-size: 24px;
+            margin-bottom: 5px;
         }
 
         .header p {
             opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .stats {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .stat {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 12px 18px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .stat strong {
-            display: block;
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-
-        .stat span {
-            font-size: 12px;
-            opacity: 0.9;
+            font-size: 13px;
         }
 
         .content {
-            padding: 30px;
+            padding: 20px;
         }
 
+        /* Add Item Form */
         .add-form {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
             margin-bottom: 25px;
         }
 
-        .add-form h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .form-row {
+        .add-form-main {
             display: flex;
             gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .form-row:last-child {
-            margin-bottom: 0;
         }
 
         .add-form input {
@@ -102,7 +65,7 @@
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .add-form input:focus {
@@ -117,201 +80,157 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            white-space: nowrap;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .add-form button:hover {
             background: #15501f;
         }
 
-        .actions-bar {
+        /* Section Headers */
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .filters {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .filter-btn:hover {
-            border-color: #1a5f2a;
-        }
-
-        .filter-btn.active {
-            background: #1a5f2a;
-            color: white;
-            border-color: #1a5f2a;
-        }
-
-        .check-all-btn {
-            padding: 8px 16px;
-            background: #f0932b;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .check-all-btn:hover {
-            background: #e67e22;
-        }
-
-        .check-all-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .grocery-list {
-            list-style: none;
-        }
-
-        .grocery-item {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
             margin-bottom: 15px;
-            border: 2px solid transparent;
-            transition: all 0.2s;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
-        .grocery-item:hover {
-            border-color: #e0e0e0;
-        }
-
-        .grocery-item.on-sale {
-            background: #fff5f5;
-            border-color: #ff6b6b;
-        }
-
-        .grocery-item.purchased {
-            opacity: 0.6;
-            background: #e8f5e9;
-        }
-
-        .item-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 12px;
-        }
-
-        .item-header input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-            accent-color: #1a5f2a;
-        }
-
-        .item-name {
+        .section-header h2 {
             font-size: 18px;
-            font-weight: 600;
-            flex: 1;
-        }
-
-        .grocery-item.purchased .item-name {
-            text-decoration: line-through;
-        }
-
-        .sale-badge {
-            background: #ff6b6b;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .item-details {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .detail {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .detail strong {
             color: #333;
         }
 
-        .price-current {
-            font-size: 20px;
-            color: #1a5f2a;
-            font-weight: 700;
+        .section-header .count {
+            background: #1a5f2a;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 13px;
         }
 
-        .price-regular {
-            text-decoration: line-through;
-            color: #999;
-            margin-left: 8px;
+        /* Shopping List */
+        .shopping-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .store-group-header {
+            background: linear-gradient(135deg, #1a5f2a 0%, #2d8f4e 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 15px 0 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .store-group-header:first-child {
+            margin-top: 0;
+        }
+
+        .store-group-count {
+            background: rgba(255,255,255,0.25);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+
+        .list-item:hover {
+            background: #f0f0f0;
+        }
+
+        .item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .item-meta {
+            font-size: 11px;
+            color: #666;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .item-meta .frequency {
+            color: #1a5f2a;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 2px 8px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .item-meta .frequency:hover {
+            background: #c8e6c9;
+        }
+
+        .item-meta .frequency-target {
+            color: #666;
+            font-size: 10px;
+        }
+
+        .item-meta .price {
+            color: #e67e22;
+            font-weight: 500;
+        }
+
+        .bought-btn {
+            padding: 8px 16px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .bought-btn:hover {
+            background: #219a52;
+            transform: scale(1.05);
         }
 
         .item-actions {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            gap: 6px;
         }
 
         .action-btn {
-            padding: 8px 14px;
+            padding: 5px 8px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s;
-        }
-
-        .wf-link {
-            background: #f0932b;
-            color: white;
-            text-decoration: none;
-        }
-
-        .wf-link:hover {
-            background: #e67e22;
-        }
-
-        .check-btn {
-            background: #3498db;
-            color: white;
-        }
-
-        .check-btn:hover {
-            background: #2980b9;
-        }
-
-        .check-btn:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-        }
-
-        .history-btn {
-            background: #9b59b6;
-            color: white;
-        }
-
-        .history-btn:hover {
-            background: #8e44ad;
+            font-size: 10px;
         }
 
         .delete-btn {
@@ -319,16 +238,85 @@
             color: white;
         }
 
-        .delete-btn:hover {
-            background: #c0392b;
+        /* Buy Again Section */
+        .buy-again-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
+        .buy-again-section h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .frequent-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .frequent-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .frequent-item:hover {
+            border-color: #1a5f2a;
+            background: #e8f5e9;
+        }
+
+        .frequent-item .name {
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .frequent-item .stats {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .frequent-item .add-btn {
+            background: #1a5f2a;
+            color: white;
+            border: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .due-soon {
+            border-color: #ff6b6b !important;
+            background: #fff5f5 !important;
+        }
+
+        .due-soon .stats {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+
+        /* Empty States */
         .empty-state {
             text-align: center;
-            padding: 50px 20px;
+            padding: 30px;
             color: #999;
         }
 
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -348,12 +336,10 @@
 
         .modal-content {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 12px;
-            max-width: 500px;
+            max-width: 400px;
             width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
         }
 
         .modal-header {
@@ -375,57 +361,308 @@
             color: #999;
         }
 
-        .price-history-list {
+        .history-list {
             list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
-        .price-history-item {
-            padding: 12px;
+        .history-item {
+            padding: 10px 0;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            font-size: 14px;
         }
 
-        .price-history-item:last-child {
+        .history-item:last-child {
             border-bottom: none;
         }
 
-        .history-price {
-            font-weight: 600;
-            color: #1a5f2a;
+        /* User/Store selectors */
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .history-price.on-sale {
-            color: #ff6b6b;
+        .user-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .history-date {
+        .user-selector label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .user-selector select {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .manage-btn {
+            padding: 5px 10px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 12px;
-            color: #999;
         }
 
-        .loading {
-            display: inline-block;
+        .manage-btn:hover {
+            background: #555;
+        }
+
+        .options-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .options-row select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
             width: 16px;
             height: 16px;
-            border: 2px solid #fff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            cursor: pointer;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        /* Store Tabs */
+        .store-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
-        .url-input {
-            font-size: 12px !important;
-        }
-
-        .frequency {
-            color: #1a5f2a;
+        .store-tab {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
             font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .store-tab:hover {
+            border-color: #1a5f2a;
+        }
+
+        .store-tab.active {
+            background: #1a5f2a;
+            color: white;
+            border-color: #1a5f2a;
+        }
+
+        .store-tab .count {
+            background: rgba(0,0,0,0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 6px;
+        }
+
+        .store-tab.active .count {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .item-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .store-badge {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .user-badge {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .occasional-badge {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .store-badge {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .store-badge:hover {
+            opacity: 0.8;
+        }
+
+        .no-store-badge {
+            background: #f5f5f5;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .store-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #ffffff;
+            border: 2px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            min-width: 160px;
+            margin-top: 5px;
+        }
+
+        .store-dropdown-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .store-dropdown-item:first-child {
+            border-radius: 6px 6px 0 0;
+        }
+
+        .store-dropdown-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .store-dropdown-item:hover {
+            background: #f0f0f0;
+        }
+
+        .store-dropdown-item.active {
+            background: #1a5f2a;
+            color: white;
+        }
+
+        .store-dropdown-item.active:hover {
+            background: #15501f;
+        }
+
+        .last-purchased {
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Manage modal */
+        .manage-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .manage-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .manage-add {
+            display: flex;
+            gap: 10px;
+        }
+
+        .manage-add input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .manage-add button {
+            padding: 8px 15px;
+            background: #1a5f2a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* Undo Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .toast-message {
+            font-size: 14px;
+        }
+
+        .toast-undo {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .toast-undo:hover {
+            background: white;
+            color: #333;
         }
     </style>
 </head>
@@ -434,296 +671,608 @@
         <div class="app">
             <div class="header">
                 <h1>Grocery Tracker</h1>
-                <p>Monitor Whole Foods prices and never miss a sale</p>
-                <div class="stats">
-                    <div class="stat">
-                        <strong id="totalItems">0</strong>
-                        <span>Total Items</span>
-                    </div>
-                    <div class="stat">
-                        <strong id="purchasedItems">0</strong>
-                        <span>Purchased</span>
-                    </div>
-                    <div class="stat">
-                        <strong id="onSaleItems">0</strong>
-                        <span>On Sale</span>
-                    </div>
-                    <div class="stat">
-                        <strong id="trackedItems">0</strong>
-                        <span>Price Tracked</span>
-                    </div>
+                <p>Track purchases and predict when you'll need items again</p>
+            </div>
+
+            <div class="user-bar">
+                <div class="user-selector">
+                    <label>Shopping as:</label>
+                    <select id="currentUser" onchange="saveCurrentUser()">
+                        <option value="">Select user...</option>
+                    </select>
+                    <button class="manage-btn" onclick="openManageModal('users')">Manage Users</button>
                 </div>
+                <button class="manage-btn" onclick="openManageModal('stores')">Manage Stores</button>
             </div>
 
             <div class="content">
                 <div class="add-form">
-                    <h3>Add Grocery Item</h3>
-                    <div class="form-row">
-                        <input type="text" id="itemName" placeholder="Item name (e.g., Organic Bananas)">
+                    <div class="add-form-main">
+                        <input type="text" id="itemName" placeholder="Add item to shopping list..." onkeypress="if(event.key==='Enter')addItem()">
+                        <button onclick="addItem()">Add</button>
                     </div>
-                    <div class="form-row">
-                        <input type="text" id="itemUrl" class="url-input" placeholder="Whole Foods product URL (optional - for price tracking)">
-                        <button onclick="addItem()">Add Item</button>
+                    <div class="options-row">
+                        <select id="itemStore">
+                            <option value="">No store</option>
+                        </select>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="itemOccasional">
+                            Occasional (seasonal, one-time)
+                        </label>
                     </div>
                 </div>
 
-                <div class="actions-bar">
-                    <div class="filters">
-                        <button class="filter-btn active" onclick="setFilter('all')">All</button>
-                        <button class="filter-btn" onclick="setFilter('pending')">To Buy</button>
-                        <button class="filter-btn" onclick="setFilter('purchased')">Purchased</button>
-                        <button class="filter-btn" onclick="setFilter('on-sale')">On Sale</button>
-                        <button class="filter-btn" onclick="setFilter('tracked')">Price Tracked</button>
-                    </div>
-                    <button class="check-all-btn" onclick="checkAllPrices()" id="checkAllBtn">
-                        Check All Prices
-                    </button>
+                <div class="store-tabs" id="storeTabs"></div>
+
+                <div class="section-header">
+                    <h2>Shopping List</h2>
+                    <span class="count" id="listCount">0 items</span>
                 </div>
 
-                <ul class="grocery-list" id="groceryList">
+                <ul class="shopping-list" id="shoppingList">
                     <li class="empty-state">Loading...</li>
                 </ul>
+
+                <div class="buy-again-section" id="buyAgainSection" style="display:none;">
+                    <h3>Buy Again</h3>
+                    <div class="frequent-items" id="frequentItems"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Price History Modal -->
+    <!-- Purchase History Modal -->
     <div class="modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="historyModalTitle">Price History</h3>
-                <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
+                <h3 id="historyTitle">Purchase History</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <ul class="price-history-list" id="priceHistoryList"></ul>
+            <ul class="history-list" id="historyList"></ul>
+        </div>
+    </div>
+
+    <!-- Undo Toast -->
+    <div class="toast" id="undoToast">
+        <span class="toast-message" id="toastMessage">Item marked as bought</span>
+        <button class="toast-undo" onclick="undoLastAction()">Undo</button>
+    </div>
+
+    <!-- Manage Users/Stores Modal --><div class="modal" id="manageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="manageTitle">Manage</h3>
+                <button class="modal-close" onclick="closeManageModal()">&times;</button>
+            </div>
+            <ul class="manage-list" id="manageList"></ul>
+            <div class="manage-add">
+                <input type="text" id="manageInput" placeholder="Enter name..." onkeypress="if(event.key==='Enter')addManageItem()">
+                <button onclick="addManageItem()">Add</button>
+            </div>
         </div>
     </div>
 
     <script>
-        const API_BASE = '';
-        let items = [];
-        let currentFilter = 'all';
+        let listItems = [];
+        let frequentItems = [];
+        let users = [];
+        let stores = [];
+        let manageType = 'users';
+        let lastAction = null;
+        let toastTimeout = null;
+        let selectedStoreFilter = 'all';
 
-        async function fetchItems() {
+        async function fetchData() {
             try {
-                const response = await fetch(`${API_BASE}/api/items`);
-                items = await response.json();
+                const [listRes, frequentRes, usersRes, storesRes] = await Promise.all([
+                    fetch('/api/items/on-list'),
+                    fetch('/api/items/frequent'),
+                    fetch('/api/users'),
+                    fetch('/api/stores')
+                ]);
+                listItems = await listRes.json();
+                frequentItems = await frequentRes.json();
+                users = await usersRes.json();
+                stores = await storesRes.json();
+                renderUserSelector();
+                renderStoreSelector();
                 render();
             } catch (error) {
-                console.error('Failed to fetch items:', error);
-                document.getElementById('groceryList').innerHTML =
-                    '<li class="empty-state">Failed to load items. Is the server running?</li>';
+                console.error('Failed to fetch:', error);
             }
+        }
+
+        function renderUserSelector() {
+            const select = document.getElementById('currentUser');
+            const currentValue = select.value || localStorage.getItem('currentUserId') || '';
+            select.innerHTML = '<option value="">Select user...</option>' +
+                users.map(u => `<option value="${u.id}">${escapeHtml(u.name)}</option>`).join('');
+            select.value = currentValue;
+        }
+
+        function renderStoreSelector() {
+            const select = document.getElementById('itemStore');
+            select.innerHTML = '<option value="">No store selected</option>' +
+                stores.map(s => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
+        }
+
+        function renderStoreTabs() {
+            const tabsEl = document.getElementById('storeTabs');
+
+            // Count items per store
+            const allCount = listItems.length;
+            const noStoreCount = listItems.filter(i => !i.store_id).length;
+            const storeCounts = {};
+            stores.forEach(s => {
+                storeCounts[s.id] = listItems.filter(i => i.store_id === s.id).length;
+            });
+
+            // Only show tabs if there are stores with items
+            const storesWithItems = stores.filter(s => storeCounts[s.id] > 0);
+            if (storesWithItems.length === 0 && noStoreCount === allCount) {
+                tabsEl.style.display = 'none';
+                return;
+            }
+            tabsEl.style.display = 'flex';
+
+            let html = `<button class="store-tab ${selectedStoreFilter === 'all' ? 'active' : ''}" onclick="filterByStore('all')">All<span class="count">${allCount}</span></button>`;
+
+            stores.forEach(s => {
+                if (storeCounts[s.id] > 0) {
+                    html += `<button class="store-tab ${selectedStoreFilter === s.id ? 'active' : ''}" onclick="filterByStore(${s.id})">${escapeHtml(s.name)}<span class="count">${storeCounts[s.id]}</span></button>`;
+                }
+            });
+
+            if (noStoreCount > 0 && storesWithItems.length > 0) {
+                html += `<button class="store-tab ${selectedStoreFilter === 'none' ? 'active' : ''}" onclick="filterByStore('none')">No Store<span class="count">${noStoreCount}</span></button>`;
+            }
+
+            tabsEl.innerHTML = html;
+        }
+
+        function filterByStore(storeId) {
+            selectedStoreFilter = storeId;
+            render();
+        }
+
+        function getFilteredItems(items) {
+            if (selectedStoreFilter === 'all') return items;
+            if (selectedStoreFilter === 'none') return items.filter(i => !i.store_id);
+            return items.filter(i => i.store_id === selectedStoreFilter);
+        }
+
+        function saveCurrentUser() {
+            const userId = document.getElementById('currentUser').value;
+            localStorage.setItem('currentUserId', userId);
+        }
+
+        function getCurrentUserId() {
+            return document.getElementById('currentUser').value || null;
+        }
+
+        function showUndoToast(message, action) {
+            lastAction = action;
+            document.getElementById('toastMessage').textContent = message;
+            const toast = document.getElementById('undoToast');
+            toast.classList.add('show');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+                lastAction = null;
+            }, 5000);
+        }
+
+        async function undoLastAction() {
+            if (!lastAction) return;
+
+            const toast = document.getElementById('undoToast');
+            toast.classList.remove('show');
+            if (toastTimeout) clearTimeout(toastTimeout);
+
+            if (lastAction.type === 'bought') {
+                await fetch(`/api/items/${lastAction.itemId}/add-to-list`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+            }
+
+            lastAction = null;
+            fetchData();
         }
 
         async function addItem() {
             const nameInput = document.getElementById('itemName');
-            const urlInput = document.getElementById('itemUrl');
+            const storeSelect = document.getElementById('itemStore');
+            const occasionalCheck = document.getElementById('itemOccasional');
 
             const name = nameInput.value.trim();
-            const url = urlInput.value.trim();
+            if (!name) return;
 
-            if (!name) {
-                alert('Please enter an item name');
-                return;
-            }
+            const store_id = storeSelect.value || null;
+            const added_by = getCurrentUserId();
+            const occasional = occasionalCheck.checked;
 
-            try {
-                const response = await fetch(`${API_BASE}/api/items`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, whole_foods_url: url })
-                });
+            await fetch('/api/items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, store_id, added_by, occasional })
+            });
 
-                if (response.ok) {
-                    nameInput.value = '';
-                    urlInput.value = '';
-                    fetchItems();
-                }
-            } catch (error) {
-                console.error('Failed to add item:', error);
-                alert('Failed to add item');
-            }
+            nameInput.value = '';
+            occasionalCheck.checked = false;
+            fetchData();
         }
 
-        async function togglePurchased(itemId, purchased) {
-            try {
-                await fetch(`${API_BASE}/api/items/${itemId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ purchased: !purchased })
-                });
-                fetchItems();
-            } catch (error) {
-                console.error('Failed to update item:', error);
-            }
+        async function markBought(itemId) {
+            const item = listItems.find(i => i.id === itemId);
+            const itemName = item ? item.name : 'Item';
+
+            const user_id = getCurrentUserId();
+            await fetch(`/api/items/${itemId}/bought`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id })
+            });
+
+            showUndoToast(`"${itemName}" marked as bought`, { type: 'bought', itemId });
+            fetchData();
+        }
+
+        async function addToList(itemId) {
+            await fetch(`/api/items/${itemId}/add-to-list`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            });
+            fetchData();
         }
 
         async function deleteItem(itemId) {
-            if (!confirm('Delete this item?')) return;
-
-            try {
-                await fetch(`${API_BASE}/api/items/${itemId}`, {
-                    method: 'DELETE'
-                });
-                fetchItems();
-            } catch (error) {
-                console.error('Failed to delete item:', error);
-            }
+            if (!confirm('Delete this item permanently?')) return;
+            await fetch(`/api/items/${itemId}`, { method: 'DELETE' });
+            fetchData();
         }
 
-        async function checkPrice(itemId, button) {
-            button.disabled = true;
-            button.innerHTML = '<span class="loading"></span>';
-
-            try {
-                const response = await fetch(`${API_BASE}/api/items/${itemId}/check-price`, {
-                    method: 'POST'
-                });
-                const data = await response.json();
-
-                if (data.error) {
-                    alert('Price check failed: ' + data.error);
-                } else {
-                    fetchItems();
-                }
-            } catch (error) {
-                console.error('Failed to check price:', error);
-                alert('Failed to check price');
-            }
-
-            button.disabled = false;
-            button.textContent = 'Check Price';
-        }
-
-        async function checkAllPrices() {
-            const btn = document.getElementById('checkAllBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="loading"></span> Checking...';
-
-            try {
-                await fetch(`${API_BASE}/api/check-all-prices`, {
-                    method: 'POST'
-                });
-                fetchItems();
-            } catch (error) {
-                console.error('Failed to check prices:', error);
-            }
-
-            btn.disabled = false;
-            btn.textContent = 'Check All Prices';
-        }
-
-        async function showPriceHistory(itemId, itemName) {
-            document.getElementById('historyModalTitle').textContent = `Price History: ${itemName}`;
+        async function showHistory(itemId, name) {
+            document.getElementById('historyTitle').textContent = `${name} - History`;
             document.getElementById('historyModal').classList.add('active');
 
-            try {
-                const response = await fetch(`${API_BASE}/api/items/${itemId}/price-history`);
-                const history = await response.json();
+            const [purchaseRes, storeRes] = await Promise.all([
+                fetch(`/api/items/${itemId}/purchases`),
+                fetch(`/api/items/${itemId}/store-history`)
+            ]);
+            const purchases = await purchaseRes.json();
+            const storeChanges = await storeRes.json();
 
-                const list = document.getElementById('priceHistoryList');
-                if (history.length === 0) {
-                    list.innerHTML = '<li class="empty-state">No price history yet</li>';
-                } else {
-                    list.innerHTML = history.map(h => `
-                        <li class="price-history-item">
-                            <div>
-                                <span class="history-price ${h.on_sale ? 'on-sale' : ''}">
-                                    $${h.price?.toFixed(2) || 'N/A'}
-                                    ${h.on_sale ? ' (SALE)' : ''}
-                                </span>
-                                ${h.regular_price && h.on_sale ? `<span style="color:#999;margin-left:8px;">reg: $${h.regular_price.toFixed(2)}</span>` : ''}
-                            </div>
-                            <span class="history-date">${new Date(h.checked_at).toLocaleDateString()} ${new Date(h.checked_at).toLocaleTimeString()}</span>
-                        </li>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Failed to load history:', error);
+            const list = document.getElementById('historyList');
+            let html = '';
+
+            // Purchase history
+            html += '<li style="font-weight:600;padding:10px 0 5px;border-bottom:none;">Purchases</li>';
+            if (purchases.length === 0) {
+                html += '<li class="empty-state" style="padding:10px 0;">No purchases yet</li>';
+            } else {
+                html += purchases.map(h => `
+                    <li class="history-item">
+                        <span>${new Date(h.purchased_at).toLocaleDateString('en-US', {
+                            weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+                        })}</span>
+                        ${h.price ? `<span>$${h.price.toFixed(2)}</span>` : ''}
+                    </li>
+                `).join('');
             }
+
+            // Store change history
+            if (storeChanges.length > 0) {
+                html += '<li style="font-weight:600;padding:15px 0 5px;border-bottom:none;">Store Changes</li>';
+                html += storeChanges.map(h => `
+                    <li class="history-item">
+                        <span>${h.from_store_name || 'No store'} → ${h.to_store_name || 'No store'}</span>
+                        <span style="color:#888;font-size:12px;">${new Date(h.changed_at).toLocaleDateString('en-US', {
+                            month: 'short', day: 'numeric'
+                        })}${h.changed_by_name ? ` by ${h.changed_by_name}` : ''}</span>
+                    </li>
+                `).join('');
+            }
+
+            list.innerHTML = html;
         }
 
-        function closeHistoryModal() {
+        function closeModal() {
             document.getElementById('historyModal').classList.remove('active');
         }
 
-        function setFilter(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            render();
+        function openManageModal(type) {
+            manageType = type;
+            document.getElementById('manageTitle').textContent = type === 'users' ? 'Manage Users' : 'Manage Stores';
+            document.getElementById('manageInput').placeholder = type === 'users' ? 'Enter user name...' : 'Enter store name...';
+            document.getElementById('manageModal').classList.add('active');
+            renderManageList();
         }
 
-        function getFilteredItems() {
-            switch (currentFilter) {
-                case 'pending':
-                    return items.filter(i => !i.purchased);
-                case 'purchased':
-                    return items.filter(i => i.purchased);
-                case 'on-sale':
-                    return items.filter(i => i.on_sale);
-                case 'tracked':
-                    return items.filter(i => i.whole_foods_url);
-                default:
-                    return items;
+        function closeManageModal() {
+            document.getElementById('manageModal').classList.remove('active');
+        }
+
+        function renderManageList() {
+            const list = document.getElementById('manageList');
+            const items = manageType === 'users' ? users : stores;
+            if (items.length === 0) {
+                list.innerHTML = `<li class="empty-state">No ${manageType} yet</li>`;
+            } else {
+                list.innerHTML = items.map(item => `
+                    <li class="manage-item">
+                        <span>${escapeHtml(item.name)}</span>
+                        <button class="action-btn delete-btn" onclick="deleteManageItem(${item.id})">Delete</button>
+                    </li>
+                `).join('');
             }
+        }
+
+        async function addManageItem() {
+            const input = document.getElementById('manageInput');
+            const name = input.value.trim();
+            if (!name) return;
+
+            const endpoint = manageType === 'users' ? '/api/users' : '/api/stores';
+            await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+
+            input.value = '';
+            await fetchData();
+            renderManageList();
+        }
+
+        async function deleteManageItem(id) {
+            if (!confirm(`Delete this ${manageType.slice(0, -1)}?`)) return;
+            const endpoint = manageType === 'users' ? `/api/users/${id}` : `/api/stores/${id}`;
+            await fetch(endpoint, { method: 'DELETE' });
+            await fetchData();
+            renderManageList();
+        }
+
+        let activeDropdown = null;
+
+        function showStoreDropdown(event, itemId, currentStoreId) {
+            event.stopPropagation();
+            closeStoreDropdown();
+
+            const badge = event.target;
+            const rect = badge.getBoundingClientRect();
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'store-dropdown';
+            dropdown.id = 'storeDropdown';
+            dropdown.style.position = 'fixed';
+            dropdown.style.top = (rect.bottom + 5) + 'px';
+            dropdown.style.left = rect.left + 'px';
+
+            let html = `<div class="store-dropdown-item ${!currentStoreId ? 'active' : ''}" onclick="changeItemStore(${itemId}, null)">No store</div>`;
+            stores.forEach(s => {
+                html += `<div class="store-dropdown-item ${currentStoreId === s.id ? 'active' : ''}" onclick="changeItemStore(${itemId}, ${s.id})">${escapeHtml(s.name)}</div>`;
+            });
+
+            dropdown.innerHTML = html;
+            document.body.appendChild(dropdown);
+            activeDropdown = dropdown;
+        }
+
+        function closeStoreDropdown() {
+            if (activeDropdown) {
+                activeDropdown.remove();
+                activeDropdown = null;
+            }
+        }
+
+        async function changeItemStore(itemId, newStoreId) {
+            closeStoreDropdown();
+            const changed_by = getCurrentUserId();
+            await fetch(`/api/items/${itemId}/store`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ store_id: newStoreId, changed_by })
+            });
+            fetchData();
+        }
+
+        const frequencyOptions = [
+            { days: null, label: 'Auto (from purchases)' },
+            { days: 7, label: 'Weekly' },
+            { days: 14, label: 'Every 2 weeks' },
+            { days: 21, label: 'Every 3 weeks' },
+            { days: 30, label: 'Monthly' },
+            { days: 60, label: 'Every 2 months' }
+        ];
+
+        function showFrequencyDropdown(event, itemId, currentFrequency) {
+            event.stopPropagation();
+            closeStoreDropdown();
+
+            const badge = event.target;
+            const rect = badge.getBoundingClientRect();
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'store-dropdown';
+            dropdown.id = 'storeDropdown';
+            dropdown.style.position = 'fixed';
+            dropdown.style.top = (rect.bottom + 5) + 'px';
+            dropdown.style.left = rect.left + 'px';
+
+            let html = frequencyOptions.map(opt =>
+                `<div class="store-dropdown-item ${currentFrequency === opt.days ? 'active' : ''}" onclick="setItemFrequency(${itemId}, ${opt.days})">${opt.label}</div>`
+            ).join('');
+
+            dropdown.innerHTML = html;
+            document.body.appendChild(dropdown);
+            activeDropdown = dropdown;
+        }
+
+        async function setItemFrequency(itemId, days) {
+            closeStoreDropdown();
+            await fetch(`/api/items/${itemId}/frequency`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ days })
+            });
+            fetchData();
+        }
+
+        // Close dropdown when clicking outside or scrolling
+        document.addEventListener('click', closeStoreDropdown);
+        document.addEventListener('scroll', closeStoreDropdown, true);
+
+        function formatLastPurchased(dateStr) {
+            if (!dateStr) return null;
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) return 'Last bought today';
+            if (diffDays === 1) return 'Last bought yesterday';
+            if (diffDays < 7) return `Last bought ${diffDays} days ago`;
+            if (diffDays < 30) return `Last bought ${Math.floor(diffDays / 7)} week${Math.floor(diffDays / 7) > 1 ? 's' : ''} ago`;
+            return `Last bought ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+        }
+
+        function formatFrequency(days) {
+            if (!days) return null;
+            if (days <= 7) return 'Weekly';
+            if (days <= 14) return 'Every 2 weeks';
+            if (days <= 21) return 'Every 3 weeks';
+            if (days <= 35) return 'Monthly';
+            return `Every ${days} days`;
+        }
+
+        function getDaysUntilDue(nextPurchase) {
+            if (!nextPurchase) return null;
+            const next = new Date(nextPurchase);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const diff = Math.ceil((next - today) / (1000 * 60 * 60 * 24));
+            return diff;
+        }
+
+        function formatDueDate(nextPurchase) {
+            const days = getDaysUntilDue(nextPurchase);
+            if (days === null) return null;
+            if (days < 0) return `${Math.abs(days)} days overdue`;
+            if (days === 0) return 'Due today';
+            if (days === 1) return 'Due tomorrow';
+            if (days <= 7) return `Due in ${days} days`;
+            return null;
         }
 
         function render() {
-            // Update stats
-            document.getElementById('totalItems').textContent = items.length;
-            document.getElementById('purchasedItems').textContent = items.filter(i => i.purchased).length;
-            document.getElementById('onSaleItems').textContent = items.filter(i => i.on_sale).length;
-            document.getElementById('trackedItems').textContent = items.filter(i => i.whole_foods_url).length;
+            // Render store tabs first
+            renderStoreTabs();
 
-            const filtered = getFilteredItems();
-            const list = document.getElementById('groceryList');
+            // Get filtered items
+            const filteredList = getFilteredItems(listItems);
+            const filteredFrequent = getFilteredItems(frequentItems);
 
-            if (filtered.length === 0) {
-                list.innerHTML = `<li class="empty-state">
-                    ${currentFilter === 'all' ? 'No items yet. Add your first grocery item above!' : 'No items match this filter.'}
-                </li>`;
-                return;
+            // Render shopping list
+            const listEl = document.getElementById('shoppingList');
+            document.getElementById('listCount').textContent = `${filteredList.length} item${filteredList.length !== 1 ? 's' : ''}`;
+
+            if (filteredList.length === 0) {
+                listEl.innerHTML = selectedStoreFilter === 'all'
+                    ? '<li class="empty-state">Your shopping list is empty. Add items above!</li>'
+                    : '<li class="empty-state">No items for this store.</li>';
+            } else {
+                // Group items by store
+                const grouped = {};
+                filteredList.forEach(item => {
+                    const storeKey = item.store_name || '_nostore';
+                    if (!grouped[storeKey]) grouped[storeKey] = [];
+                    grouped[storeKey].push(item);
+                });
+
+                // Sort store names, put "No store" at the end
+                const storeOrder = Object.keys(grouped).sort((a, b) => {
+                    if (a === '_nostore') return 1;
+                    if (b === '_nostore') return -1;
+                    return a.localeCompare(b);
+                });
+
+                let html = '';
+                storeOrder.forEach(storeKey => {
+                    const items = grouped[storeKey];
+                    const storeName = storeKey === '_nostore' ? 'No Store' : storeKey;
+
+                    // Only show store header if viewing all stores and there are multiple stores
+                    if (selectedStoreFilter === 'all' && storeOrder.length > 1) {
+                        html += `<li class="store-group-header">${escapeHtml(storeName)} <span class="store-group-count">${items.length}</span></li>`;
+                    }
+
+                    html += items.map(item => `
+                        <li class="list-item">
+                            <div class="item-info">
+                                <div class="item-name">${escapeHtml(item.name)}</div>
+                                <div class="item-meta">
+                                    <span class="item-badge ${item.store_name ? 'store-badge' : 'no-store-badge'}" onclick="showStoreDropdown(event, ${item.id}, ${item.store_id || 'null'})">${item.store_name ? escapeHtml(item.store_name) : 'No store'}</span>
+                                    ${item.occasional ? `<span class="item-badge occasional-badge">Occasional</span>` : ''}
+                                    ${item.added_by_name ? `<span class="item-badge user-badge">Added by ${escapeHtml(item.added_by_name)}</span>` : ''}
+                                    ${!item.occasional ? `<span class="frequency" onclick="showFrequencyDropdown(event, ${item.id}, ${item.target_frequency || 'null'})">${item.target_frequency ? formatFrequency(item.target_frequency) : (item.frequency_days ? formatFrequency(item.frequency_days) : 'Set frequency')}</span>` : ''}
+                                    ${!item.occasional && item.target_frequency && item.frequency_days && item.frequency_days !== item.target_frequency ? `<span class="frequency-target">(actual: ${formatFrequency(item.frequency_days)})</span>` : ''}
+                                    ${item.purchase_count > 0 ? `<span>Bought ${item.purchase_count}x</span>` : '<span>First time</span>'}
+                                    ${item.current_price ? `<span class="price">$${item.current_price.toFixed(2)}</span>` : ''}
+                                </div>
+                                ${item.last_purchased ? `<div class="item-meta last-purchased">${formatLastPurchased(item.last_purchased)}</div>` : ''}
+                            </div>
+                            <div class="item-actions">
+                                ${item.purchase_count > 0 ? `<button class="action-btn" onclick="showHistory(${item.id}, '${escapeHtml(item.name)}')">History</button>` : ''}
+                                <button class="action-btn delete-btn" onclick="deleteItem(${item.id})">Delete</button>
+                            </div>
+                            <button class="bought-btn" onclick="markBought(${item.id})">Bought</button>
+                        </li>
+                    `).join('');
+                });
+
+                listEl.innerHTML = html;
             }
 
-            list.innerHTML = filtered.map(item => `
-                <li class="grocery-item ${item.purchased ? 'purchased' : ''} ${item.on_sale ? 'on-sale' : ''}">
-                    <div class="item-header">
-                        <input type="checkbox" ${item.purchased ? 'checked' : ''}
-                               onchange="togglePurchased(${item.id}, ${item.purchased})">
-                        <span class="item-name">${escapeHtml(item.name)}</span>
-                        ${item.on_sale ? '<span class="sale-badge">ON SALE</span>' : ''}
-                    </div>
-                    <div class="item-details">
-                        ${item.current_price ? `
-                            <div class="detail">
-                                <span class="price-current">$${item.current_price.toFixed(2)}</span>
-                                ${item.on_sale && item.regular_price ? `<span class="price-regular">$${item.regular_price.toFixed(2)}</span>` : ''}
+            // Render Buy Again section
+            const buyAgainSection = document.getElementById('buyAgainSection');
+            const frequentEl = document.getElementById('frequentItems');
+
+            if (filteredFrequent.length === 0) {
+                buyAgainSection.style.display = 'none';
+            } else {
+                buyAgainSection.style.display = 'block';
+
+                // Sort by due date (overdue first)
+                const sorted = [...filteredFrequent].sort((a, b) => {
+                    const aDays = getDaysUntilDue(a.next_purchase);
+                    const bDays = getDaysUntilDue(b.next_purchase);
+                    if (aDays === null && bDays === null) return b.purchase_count - a.purchase_count;
+                    if (aDays === null) return 1;
+                    if (bDays === null) return -1;
+                    return aDays - bDays;
+                });
+
+                frequentEl.innerHTML = sorted.map(item => {
+                    const dueText = formatDueDate(item.next_purchase);
+                    const daysUntil = getDaysUntilDue(item.next_purchase);
+                    const isDueSoon = daysUntil !== null && daysUntil <= 3;
+
+                    return `
+                        <div class="frequent-item ${isDueSoon ? 'due-soon' : ''}" onclick="addToList(${item.id})">
+                            <div>
+                                <div class="name">${escapeHtml(item.name)}${item.store_name ? ` <span style="font-size:10px;color:#1565c0;">(${escapeHtml(item.store_name)})</span>` : ''}</div>
+                                <div class="stats">
+                                    ${dueText ? dueText : (item.frequency_days ? formatFrequency(item.frequency_days) : `${item.purchase_count}x bought`)}
+                                </div>
                             </div>
-                        ` : ''}
-                        ${item.purchase_count > 0 ? `
-                            <div class="detail">
-                                <span class="frequency">Purchased ${item.purchase_count}x</span>
-                            </div>
-                        ` : ''}
-                        ${item.last_checked ? `
-                            <div class="detail">
-                                Last checked: ${new Date(item.last_checked).toLocaleDateString()}
-                            </div>
-                        ` : ''}
-                    </div>
-                    <div class="item-actions">
-                        ${item.whole_foods_url ? `
-                            <a href="${item.whole_foods_url}" target="_blank" class="action-btn wf-link">View on WF</a>
-                            <button class="action-btn check-btn" onclick="checkPrice(${item.id}, this)">Check Price</button>
-                            <button class="action-btn history-btn" onclick="showPriceHistory(${item.id}, '${escapeHtml(item.name)}')">History</button>
-                        ` : `
-                            <span style="font-size:12px;color:#999;">No WF URL - add one to track price</span>
-                        `}
-                        <button class="action-btn delete-btn" onclick="deleteItem(${item.id})">Delete</button>
-                    </div>
-                </li>
-            `).join('');
+                            <button class="add-btn">+</button>
+                        </div>
+                    `;
+                }).join('');
+            }
         }
 
         function escapeHtml(text) {
@@ -732,21 +1281,15 @@
             return div.innerHTML;
         }
 
-        // Handle Enter key in inputs
-        document.getElementById('itemName').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') document.getElementById('itemUrl').focus();
-        });
-        document.getElementById('itemUrl').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addItem();
-        });
-
         // Close modal on outside click
-        document.getElementById('historyModal').addEventListener('click', (e) => {
-            if (e.target.id === 'historyModal') closeHistoryModal();
+        document.getElementById('historyModal').addEventListener('click', e => {
+            if (e.target.id === 'historyModal') closeModal();
+        });
+        document.getElementById('manageModal').addEventListener('click', e => {
+            if (e.target.id === 'manageModal') closeManageModal();
         });
 
-        // Initial load
-        fetchItems();
+        fetchData();
     </script>
 </body>
 </html>
