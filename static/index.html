@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a5f2a">
     <title>Grocery Tracker</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
@@ -663,6 +671,221 @@
         .toast-undo:hover {
             background: white;
             color: #333;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            /* User bar - stack on mobile */
+            .user-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px 15px;
+            }
+
+            .user-selector {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .user-selector select {
+                flex: 1;
+                padding: 10px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            /* Add form - larger inputs */
+            .add-form-main {
+                flex-direction: column;
+            }
+
+            .add-form input {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 14px 15px;
+            }
+
+            .add-form button {
+                padding: 14px;
+                font-size: 16px;
+            }
+
+            .options-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .options-row select {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .checkbox-label {
+                font-size: 14px;
+                padding: 8px 0;
+            }
+
+            .checkbox-label input {
+                width: 20px;
+                height: 20px;
+            }
+
+            /* Store tabs - scrollable */
+            .store-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 5px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .store-tab {
+                flex-shrink: 0;
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            /* List items - larger touch targets */
+            .list-item {
+                padding: 15px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .item-name {
+                font-size: 16px;
+            }
+
+            .item-meta {
+                font-size: 12px;
+                gap: 8px;
+            }
+
+            .item-badge {
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+
+            .item-actions {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                gap: 8px;
+                margin-top: 5px;
+            }
+
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            /* Bought button - full width and prominent */
+            .bought-btn {
+                order: 2;
+                padding: 12px 20px;
+                font-size: 15px;
+                min-height: 44px;
+            }
+
+            /* Buy Again section */
+            .buy-again-section {
+                padding: 15px;
+            }
+
+            .frequent-item {
+                padding: 12px 15px;
+            }
+
+            .frequent-item .name {
+                font-size: 14px;
+            }
+
+            .frequent-item .add-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
+            }
+
+            /* Dropdowns - full width on mobile */
+            .store-dropdown {
+                min-width: 200px;
+            }
+
+            .store-dropdown-item {
+                padding: 14px 15px;
+                font-size: 15px;
+            }
+
+            /* Modal - better mobile fit */
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .manage-add input {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .manage-add button {
+                padding: 12px 20px;
+            }
+
+            /* Toast - bottom safe area */
+            .toast {
+                bottom: 30px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                width: auto;
+            }
+
+            /* Store group header */
+            .store-group-header {
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+
+            /* Section header */
+            .section-header h2 {
+                font-size: 16px;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 380px) {
+            .list-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .item-info {
+                width: 100%;
+            }
+
+            .bought-btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .item-actions {
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
