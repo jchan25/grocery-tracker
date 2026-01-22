@@ -741,16 +741,13 @@
         }
 
         .item-menu {
-            position: absolute;
-            right: 0;
-            top: 100%;
+            position: fixed;
             background: white;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             z-index: 1000;
             min-width: 140px;
-            margin-top: 5px;
             overflow: hidden;
         }
 
@@ -959,11 +956,11 @@
                 font-size: 14px;
             }
 
-            /* List items - larger touch targets */
+            /* List items - compact on mobile */
             .list-item {
-                padding: 15px;
+                padding: 12px;
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 8px;
             }
 
             .item-name {
@@ -982,26 +979,25 @@
 
             /* Primary actions on mobile */
             .item-primary-actions {
-                width: 100%;
                 justify-content: flex-end;
-                margin-top: 10px;
+                gap: 6px;
             }
 
             .bought-btn {
-                padding: 12px 20px;
-                font-size: 15px;
-                min-height: 44px;
-                flex: 1;
+                padding: 8px 14px;
+                font-size: 13px;
+                min-height: 36px;
             }
 
             .na-btn {
-                min-height: 44px;
-                padding: 8px 14px;
+                min-height: 36px;
+                padding: 6px 10px;
+                font-size: 11px;
             }
 
             .item-menu-btn {
-                min-height: 44px;
-                padding: 8px 14px;
+                min-height: 36px;
+                padding: 6px 10px;
             }
 
             /* Buy Again section */
@@ -1547,8 +1543,23 @@
             event.stopPropagation();
             closeItemMenu();
             const menu = document.getElementById(`menu-${itemId}`);
+            const btn = event.target;
+            const rect = btn.getBoundingClientRect();
+
             if (menu.style.display === 'none') {
                 menu.style.display = 'block';
+                // Position menu above or below button depending on space
+                const menuHeight = menu.offsetHeight;
+                const spaceBelow = window.innerHeight - rect.bottom;
+
+                if (spaceBelow < menuHeight + 10) {
+                    // Show above
+                    menu.style.top = (rect.top - menuHeight - 5) + 'px';
+                } else {
+                    // Show below
+                    menu.style.top = (rect.bottom + 5) + 'px';
+                }
+                menu.style.right = (window.innerWidth - rect.right) + 'px';
                 activeItemMenu = menu;
             }
         }
@@ -1779,7 +1790,7 @@
                             <div class="item-primary-actions">
                                 <div class="menu-wrapper">
                                     <button class="item-menu-btn" onclick="toggleItemMenu(event, ${item.id})">•••</button>
-                                    <div class="item-menu" id="menu-${item.id}" style="display:none;">
+                                    <div class="item-menu" id="menu-${item.id}" style="display:none;left:auto;">
                                         <button class="item-menu-option" onclick="toggleDetails(${item.id}); closeItemMenu();">📝 Notes</button>
                                         <button class="item-menu-option" onclick="editItem(${item.id}, '${escapeHtml(item.name).replace(/'/g, "\\'")}'); closeItemMenu();">✏️ Edit Name</button>
                                         ${item.purchase_count > 0 ? `<button class="item-menu-option" onclick="showHistory(${item.id}, '${escapeHtml(item.name)}'); closeItemMenu();">📊 History</button>` : ''}
