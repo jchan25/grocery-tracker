@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1a5f2a">
+    <meta name="theme-color" content="#5a9f7e">
     <title>Grocery Tracker</title>
     <style>
         * {
@@ -21,7 +21,7 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a5f2a 0%, #2d8f4e 100%);
+            background: linear-gradient(135deg, #5a9f7e 0%, #8ec9a6 100%);
             font-family: system-ui, -apple-system, sans-serif;
             padding: 20px;
         }
@@ -39,7 +39,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1a5f2a 0%, #2d8f4e 100%);
+            background: linear-gradient(135deg, #5a9f7e 0%, #8ec9a6 100%);
             color: white;
             padding: 25px;
         }
@@ -78,12 +78,12 @@
 
         .add-form input:focus {
             outline: none;
-            border-color: #1a5f2a;
+            border-color: #5a9f7e;
         }
 
         .add-form button {
             padding: 12px 25px;
-            background: #1a5f2a;
+            background: #5a9f7e;
             color: white;
             border: none;
             border-radius: 8px;
@@ -93,7 +93,7 @@
         }
 
         .add-form button:hover {
-            background: #15501f;
+            background: #4a8a6a;
         }
 
         /* Section Headers */
@@ -112,7 +112,7 @@
         }
 
         .section-header .count {
-            background: #1a5f2a;
+            background: #5a9f7e;
             color: white;
             padding: 4px 12px;
             border-radius: 15px;
@@ -126,8 +126,6 @@
         }
 
         .store-group-header {
-            background: linear-gradient(135deg, #1a5f2a 0%, #2d8f4e 100%);
-            color: white;
             padding: 10px 15px;
             border-radius: 8px;
             font-weight: 600;
@@ -143,10 +141,10 @@
         }
 
         .store-group-count {
-            background: rgba(255,255,255,0.25);
             padding: 2px 10px;
             border-radius: 12px;
             font-size: 12px;
+            color: white;
         }
 
         .list-item {
@@ -187,17 +185,17 @@
         }
 
         .item-meta .frequency {
-            color: #1a5f2a;
+            color: #5a9f7e;
             font-weight: 500;
             cursor: pointer;
             padding: 2px 8px;
-            background: #e8f5e9;
+            background: #e8f4ed;
             border-radius: 10px;
             font-size: 11px;
         }
 
         .item-meta .frequency:hover {
-            background: #c8e6c9;
+            background: #d4e8db;
         }
 
         .item-meta .frequency-target {
@@ -212,7 +210,7 @@
 
         .bought-btn {
             padding: 8px 16px;
-            background: #27ae60;
+            background: #6ab88c;
             color: white;
             border: none;
             border-radius: 8px;
@@ -224,7 +222,7 @@
         }
 
         .bought-btn:hover {
-            background: #219a52;
+            background: #5aa87c;
             transform: scale(1.05);
         }
 
@@ -279,8 +277,8 @@
         }
 
         .frequent-item:hover {
-            border-color: #1a5f2a;
-            background: #e8f5e9;
+            border-color: #5a9f7e;
+            background: #e8f4ed;
         }
 
         .frequent-item .name {
@@ -294,7 +292,7 @@
         }
 
         .frequent-item .add-btn {
-            background: #1a5f2a;
+            background: #5a9f7e;
             color: white;
             border: none;
             width: 22px;
@@ -458,6 +456,20 @@
             cursor: pointer;
         }
 
+        .form-error {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #ffeaea;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
         /* Store Tabs */
         .store-tabs {
             display: flex;
@@ -478,13 +490,13 @@
         }
 
         .store-tab:hover {
-            border-color: #1a5f2a;
+            border-color: #5a9f7e;
         }
 
         .store-tab.active {
-            background: #1a5f2a;
+            background: #5a9f7e;
             color: white;
-            border-color: #1a5f2a;
+            border-color: #5a9f7e;
         }
 
         .store-tab .count {
@@ -574,12 +586,12 @@
         }
 
         .store-dropdown-item.active {
-            background: #1a5f2a;
+            background: #5a9f7e;
             color: white;
         }
 
         .store-dropdown-item.active:hover {
-            background: #15501f;
+            background: #4a8a6a;
         }
 
         .last-purchased {
@@ -605,6 +617,194 @@
             margin-bottom: 5px;
         }
 
+        .manage-item-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .details-btn {
+            background: #9b59b6;
+            color: white;
+        }
+
+        /* Item Details Panel */
+        .item-details {
+            display: none;
+            background: #f0f4f8;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .item-details.show {
+            display: block;
+        }
+
+        .item-details-row {
+            margin-bottom: 10px;
+        }
+
+        .item-details-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-details-row label {
+            display: block;
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .item-details-row input,
+        .item-details-row textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .item-details-row textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .item-details-row input:focus,
+        .item-details-row textarea:focus {
+            outline: none;
+            border-color: #5a9f7e;
+        }
+
+        .item-image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: block;
+        }
+
+        .item-thumbnail {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .save-details-btn {
+            background: #5a9f7e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .save-details-btn:hover {
+            background: #4a8a6a;
+        }
+
+        .has-details-indicator {
+            width: 8px;
+            height: 8px;
+            background: #9b59b6;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        /* Item Action Menu */
+        .item-menu-btn {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        .item-menu-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .item-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 140px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .item-menu-option {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .item-menu-option:hover {
+            background: #f5f5f5;
+        }
+
+        .item-menu-option.delete {
+            color: #e74c3c;
+        }
+
+        .item-menu-option.delete:hover {
+            background: #ffeaea;
+        }
+
+        .item-primary-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .na-btn {
+            padding: 8px 12px;
+            background: #f5f5f5;
+            color: #888;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .na-btn:hover {
+            background: #e67e22;
+            color: white;
+            border-color: #e67e22;
+        }
+
+        .menu-wrapper {
+            position: relative;
+        }
+
         .manage-add {
             display: flex;
             gap: 10px;
@@ -620,7 +820,7 @@
 
         .manage-add button {
             padding: 8px 15px;
-            background: #1a5f2a;
+            background: #5a9f7e;
             color: white;
             border: none;
             border-radius: 5px;
@@ -780,25 +980,28 @@
                 font-size: 11px;
             }
 
-            .item-actions {
-                order: 3;
+            /* Primary actions on mobile */
+            .item-primary-actions {
                 width: 100%;
-                justify-content: flex-start;
-                gap: 8px;
-                margin-top: 5px;
+                justify-content: flex-end;
+                margin-top: 10px;
             }
 
-            .action-btn {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-
-            /* Bought button - full width and prominent */
             .bought-btn {
-                order: 2;
                 padding: 12px 20px;
                 font-size: 15px;
                 min-height: 44px;
+                flex: 1;
+            }
+
+            .na-btn {
+                min-height: 44px;
+                padding: 8px 14px;
+            }
+
+            .item-menu-btn {
+                min-height: 44px;
+                padding: 8px 14px;
             }
 
             /* Buy Again section */
@@ -916,13 +1119,14 @@
                     </div>
                     <div class="options-row">
                         <select id="itemStore">
-                            <option value="">No store</option>
+                            <option value="">Select store...</option>
                         </select>
                         <label class="checkbox-label">
                             <input type="checkbox" id="itemOccasional">
                             Occasional (seasonal, one-time)
                         </label>
                     </div>
+                    <div class="form-error" id="formError"></div>
                 </div>
 
                 <div class="store-tabs" id="storeTabs"></div>
@@ -1109,6 +1313,7 @@
             const nameInput = document.getElementById('itemName');
             const storeSelect = document.getElementById('itemStore');
             const occasionalCheck = document.getElementById('itemOccasional');
+            const errorEl = document.getElementById('formError');
 
             const name = nameInput.value.trim();
             if (!name) return;
@@ -1116,6 +1321,19 @@
             const store_id = storeSelect.value || null;
             const added_by = getCurrentUserId();
             const occasional = occasionalCheck.checked;
+
+            // Validate user and store selection
+            const errors = [];
+            if (!added_by) errors.push('select a user');
+            if (!store_id) errors.push('select a store');
+
+            if (errors.length > 0) {
+                errorEl.textContent = 'Please ' + errors.join(' and ') + ' before adding an item.';
+                errorEl.classList.add('show');
+                return;
+            }
+
+            errorEl.classList.remove('show');
 
             await fetch('/api/items', {
                 method: 'POST',
@@ -1143,6 +1361,21 @@
             fetchData();
         }
 
+        async function markNotAvailable(itemId) {
+            const item = listItems.find(i => i.id === itemId);
+            const itemName = item ? item.name : 'Item';
+
+            const user_id = getCurrentUserId();
+            await fetch(`/api/items/${itemId}/not-available`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id })
+            });
+
+            showUndoToast(`"${itemName}" marked as not available`, { type: 'not_available', itemId });
+            fetchData();
+        }
+
         async function addToList(itemId) {
             await fetch(`/api/items/${itemId}/add-to-list`, {
                 method: 'POST',
@@ -1155,6 +1388,37 @@
         async function deleteItem(itemId) {
             if (!confirm('Delete this item permanently?')) return;
             await fetch(`/api/items/${itemId}`, { method: 'DELETE' });
+            fetchData();
+        }
+
+        async function editItem(itemId, currentName) {
+            const newName = prompt('Edit item name:', currentName);
+            if (!newName || newName.trim() === '' || newName.trim() === currentName) return;
+
+            await fetch(`/api/items/${itemId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newName.trim() })
+            });
+            fetchData();
+        }
+
+        function toggleDetails(itemId) {
+            const panel = document.getElementById(`details-${itemId}`);
+            panel.classList.toggle('show');
+        }
+
+        async function saveDetails(itemId) {
+            const notes = document.getElementById(`notes-${itemId}`).value;
+
+            await fetch(`/api/items/${itemId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ notes })
+            });
+
+            // Close the panel and refresh
+            document.getElementById(`details-${itemId}`).classList.remove('show');
             fetchData();
         }
 
@@ -1173,16 +1437,16 @@
             let html = '';
 
             // Purchase history
-            html += '<li style="font-weight:600;padding:10px 0 5px;border-bottom:none;">Purchases</li>';
+            html += '<li style="font-weight:600;padding:10px 0 5px;border-bottom:none;">History</li>';
             if (purchases.length === 0) {
-                html += '<li class="empty-state" style="padding:10px 0;">No purchases yet</li>';
+                html += '<li class="empty-state" style="padding:10px 0;">No history yet</li>';
             } else {
                 html += purchases.map(h => `
                     <li class="history-item">
                         <span>${new Date(h.purchased_at).toLocaleDateString('en-US', {
                             weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
                         })}</span>
-                        ${h.price ? `<span>$${h.price.toFixed(2)}</span>` : ''}
+                        ${h.not_available ? '<span style="color:#e67e22;font-weight:500;">Not available</span>' : (h.price ? `<span>$${h.price.toFixed(2)}</span>` : '<span style="color:#6ab88c;">Bought</span>')}
                     </li>
                 `).join('');
             }
@@ -1228,7 +1492,10 @@
                 list.innerHTML = items.map(item => `
                     <li class="manage-item">
                         <span>${escapeHtml(item.name)}</span>
-                        <button class="action-btn delete-btn" onclick="deleteManageItem(${item.id})">Delete</button>
+                        <div class="manage-item-buttons">
+                            <button class="action-btn edit-btn" onclick="editManageItem(${item.id}, '${escapeHtml(item.name)}')">Edit</button>
+                            <button class="action-btn delete-btn" onclick="deleteManageItem(${item.id})">Delete</button>
+                        </div>
                     </li>
                 `).join('');
             }
@@ -1259,7 +1526,39 @@
             renderManageList();
         }
 
+        async function editManageItem(id, currentName) {
+            const newName = prompt(`Edit ${manageType.slice(0, -1)} name:`, currentName);
+            if (!newName || newName.trim() === '' || newName.trim() === currentName) return;
+
+            const endpoint = manageType === 'users' ? `/api/users/${id}` : `/api/stores/${id}`;
+            await fetch(endpoint, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: newName.trim() })
+            });
+            await fetchData();
+            renderManageList();
+        }
+
         let activeDropdown = null;
+        let activeItemMenu = null;
+
+        function toggleItemMenu(event, itemId) {
+            event.stopPropagation();
+            closeItemMenu();
+            const menu = document.getElementById(`menu-${itemId}`);
+            if (menu.style.display === 'none') {
+                menu.style.display = 'block';
+                activeItemMenu = menu;
+            }
+        }
+
+        function closeItemMenu() {
+            if (activeItemMenu) {
+                activeItemMenu.style.display = 'none';
+                activeItemMenu = null;
+            }
+        }
 
         function showStoreDropdown(event, itemId, currentStoreId) {
             event.stopPropagation();
@@ -1345,9 +1644,9 @@
             fetchData();
         }
 
-        // Close dropdown when clicking outside or scrolling
-        document.addEventListener('click', closeStoreDropdown);
-        document.addEventListener('scroll', closeStoreDropdown, true);
+        // Close dropdowns when clicking outside or scrolling
+        document.addEventListener('click', () => { closeStoreDropdown(); closeItemMenu(); });
+        document.addEventListener('scroll', () => { closeStoreDropdown(); closeItemMenu(); }, true);
 
         function formatLastPurchased(dateStr) {
             if (!dateStr) return null;
@@ -1390,6 +1689,29 @@
             return null;
         }
 
+        // Pastel colors for stores (light for items, bold for headers)
+        const storeColors = [
+            { bg: '#e8f4fd', border: '#b8d4f0', text: '#2c5282', headerBg: '#3182ce', headerText: '#fff' },  // Blue
+            { bg: '#fef3e8', border: '#f5d5b0', text: '#975a16', headerBg: '#dd6b20', headerText: '#fff' },  // Orange
+            { bg: '#f0e8f8', border: '#d4c0e8', text: '#6b46a0', headerBg: '#805ad5', headerText: '#fff' },  // Purple
+            { bg: '#e8f8f0', border: '#b8e8d0', text: '#276749', headerBg: '#38a169', headerText: '#fff' },  // Green
+            { bg: '#fde8e8', border: '#f0b8b8', text: '#c53030', headerBg: '#e53e3e', headerText: '#fff' },  // Red
+            { bg: '#f8f8e8', border: '#e8e8b8', text: '#7b7b16', headerBg: '#b7a429', headerText: '#fff' },  // Yellow
+            { bg: '#e8f0f8', border: '#b8d0e8', text: '#2b4a6b', headerBg: '#4a6fa5', headerText: '#fff' },  // Steel blue
+            { bg: '#f8e8f0', border: '#e8b8d0', text: '#9b2c5c', headerBg: '#d53f8c', headerText: '#fff' },  // Pink
+        ];
+
+        function getStoreColor(storeId, forHeader = false) {
+            if (!storeId) return { bg: '#f5f5f5', border: '#e0e0e0', text: '#666', headerBg: '#888', headerText: '#fff' };
+            const index = (storeId - 1) % storeColors.length;
+            return storeColors[index];
+        }
+
+        function getInitials(name) {
+            if (!name) return '';
+            return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        }
+
         function render() {
             // Render store tabs first
             renderStoreTabs();
@@ -1423,37 +1745,59 @@
                 });
 
                 let html = '';
-                storeOrder.forEach(storeKey => {
+                storeOrder.forEach((storeKey, storeIndex) => {
                     const items = grouped[storeKey];
                     const storeName = storeKey === '_nostore' ? 'No Store' : storeKey;
+                    const storeId = items[0]?.store_id;
+                    const storeColor = getStoreColor(storeId);
 
                     // Only show store header if viewing all stores and there are multiple stores
                     if (selectedStoreFilter === 'all' && storeOrder.length > 1) {
-                        html += `<li class="store-group-header">${escapeHtml(storeName)} <span class="store-group-count">${items.length}</span></li>`;
+                        html += `<li class="store-group-header" style="background: ${storeColor.headerBg}; color: ${storeColor.headerText};">${escapeHtml(storeName)} <span class="store-group-count" style="background: rgba(255,255,255,0.25);">${items.length}</span></li>`;
                     }
 
-                    html += items.map(item => `
-                        <li class="list-item">
+                    html += items.map(item => {
+                        const hasDetails = item.notes;
+                        const itemColor = getStoreColor(item.store_id);
+                        const showStoreOnItem = selectedStoreFilter !== 'all' || storeOrder.length === 1;
+                        return `
+                        <li class="list-item" style="flex-wrap: wrap; background: ${itemColor.bg}; border-left: 3px solid ${itemColor.border};">
                             <div class="item-info">
-                                <div class="item-name">${escapeHtml(item.name)}</div>
+                                <div class="item-name">${escapeHtml(item.name)}${hasDetails ? '<span class="has-details-indicator" title="Has notes"></span>' : ''}</div>
                                 <div class="item-meta">
-                                    <span class="item-badge ${item.store_name ? 'store-badge' : 'no-store-badge'}" onclick="showStoreDropdown(event, ${item.id}, ${item.store_id || 'null'})">${item.store_name ? escapeHtml(item.store_name) : 'No store'}</span>
+                                    ${showStoreOnItem ? `<span class="item-badge" style="background:${itemColor.border};color:${itemColor.text};cursor:pointer;" onclick="showStoreDropdown(event, ${item.id}, ${item.store_id || 'null'})">${item.store_name ? escapeHtml(item.store_name) : 'No store'}</span>` : ''}
                                     ${item.occasional ? `<span class="item-badge occasional-badge">Occasional</span>` : ''}
-                                    ${item.added_by_name ? `<span class="item-badge user-badge">Added by ${escapeHtml(item.added_by_name)}</span>` : ''}
+                                    ${item.added_by_name ? `<span class="item-badge user-badge" title="${escapeHtml(item.added_by_name)}">${getInitials(item.added_by_name)}</span>` : ''}
                                     ${!item.occasional ? `<span class="frequency" onclick="showFrequencyDropdown(event, ${item.id}, ${item.target_frequency || 'null'})">${item.target_frequency ? formatFrequency(item.target_frequency) : (item.frequency_days ? formatFrequency(item.frequency_days) : 'Set frequency')}</span>` : ''}
                                     ${!item.occasional && item.target_frequency && item.frequency_days && item.frequency_days !== item.target_frequency ? `<span class="frequency-target">(actual: ${formatFrequency(item.frequency_days)})</span>` : ''}
-                                    ${item.purchase_count > 0 ? `<span>Bought ${item.purchase_count}x</span>` : '<span>First time</span>'}
+                                    ${item.purchase_count > 0 ? `<span>×${item.purchase_count}</span>` : '<span>New</span>'}
                                     ${item.current_price ? `<span class="price">$${item.current_price.toFixed(2)}</span>` : ''}
                                 </div>
                                 ${item.last_purchased ? `<div class="item-meta last-purchased">${formatLastPurchased(item.last_purchased)}</div>` : ''}
+                                ${item.notes ? `<div class="item-meta" style="margin-top:4px;font-style:italic;color:#666;">${escapeHtml(item.notes).substring(0, 50)}${item.notes.length > 50 ? '...' : ''}</div>` : ''}
                             </div>
-                            <div class="item-actions">
-                                ${item.purchase_count > 0 ? `<button class="action-btn" onclick="showHistory(${item.id}, '${escapeHtml(item.name)}')">History</button>` : ''}
-                                <button class="action-btn delete-btn" onclick="deleteItem(${item.id})">Delete</button>
+                            <div class="item-primary-actions">
+                                <div class="menu-wrapper">
+                                    <button class="item-menu-btn" onclick="toggleItemMenu(event, ${item.id})">•••</button>
+                                    <div class="item-menu" id="menu-${item.id}" style="display:none;">
+                                        <button class="item-menu-option" onclick="toggleDetails(${item.id}); closeItemMenu();">📝 Notes</button>
+                                        <button class="item-menu-option" onclick="editItem(${item.id}, '${escapeHtml(item.name).replace(/'/g, "\\'")}'); closeItemMenu();">✏️ Edit Name</button>
+                                        ${item.purchase_count > 0 ? `<button class="item-menu-option" onclick="showHistory(${item.id}, '${escapeHtml(item.name)}'); closeItemMenu();">📊 History</button>` : ''}
+                                        <button class="item-menu-option delete" onclick="deleteItem(${item.id}); closeItemMenu();">🗑️ Delete</button>
+                                    </div>
+                                </div>
+                                <button class="na-btn" onclick="markNotAvailable(${item.id})">N/A</button>
+                                <button class="bought-btn" onclick="markBought(${item.id})">Bought ✓</button>
                             </div>
-                            <button class="bought-btn" onclick="markBought(${item.id})">Bought</button>
+                            <div class="item-details" id="details-${item.id}">
+                                <div class="item-details-row">
+                                    <label>Notes</label>
+                                    <textarea id="notes-${item.id}" placeholder="Add notes about this item...">${item.notes ? escapeHtml(item.notes) : ''}</textarea>
+                                </div>
+                                <button class="save-details-btn" onclick="saveDetails(${item.id})">Save</button>
+                            </div>
                         </li>
-                    `).join('');
+                    `}).join('');
                 });
 
                 listEl.innerHTML = html;

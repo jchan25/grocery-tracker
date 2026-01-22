@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory, session, redirect, url_for
 from flask_cors import CORS
 from functools import wraps
+from datetime import timedelta
 import os
 
 import database as db
@@ -11,6 +12,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 app = Flask(__name__, static_folder=STATIC_DIR)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+app.permanent_session_lifetime = timedelta(days=30)
 CORS(app)
 
 # Simple password protection
@@ -89,8 +91,9 @@ def login_page():
         <div class="login-box">
             <h1>Grocery Tracker</h1>
             <p>Enter the password to continue</p>
-            <form method="POST" action="/login">
-                <input type="password" name="password" placeholder="Password" autofocus required>
+            <form method="POST" action="/login" autocomplete="on">
+                <input type="text" name="username" value="user" autocomplete="username" style="display:none;">
+                <input type="password" name="password" placeholder="Password" autocomplete="current-password" autofocus required>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -102,6 +105,7 @@ def login_page():
 def login():
     password = request.form.get('password', '')
     if password == APP_PASSWORD:
+        session.permanent = True
         session['authenticated'] = True
         return redirect(url_for('index'))
     return '''
@@ -158,8 +162,9 @@ def login():
             <h1>Grocery Tracker</h1>
             <p>Enter the password to continue</p>
             <p class="error">Incorrect password. Please try again.</p>
-            <form method="POST" action="/login">
-                <input type="password" name="password" placeholder="Password" autofocus required>
+            <form method="POST" action="/login" autocomplete="on">
+                <input type="text" name="username" value="user" autocomplete="username" style="display:none;">
+                <input type="password" name="password" placeholder="Password" autocomplete="current-password" autofocus required>
                 <button type="submit">Login</button>
             </form>
         </div>
@@ -235,7 +240,8 @@ def update_item(item_id):
         name=data.get('name'),
         whole_foods_url=data.get('whole_foods_url'),
         image_url=data.get('image_url'),
-        on_list=data.get('on_list')
+        on_list=data.get('on_list'),
+        notes=data.get('notes')
     )
     return jsonify({'message': 'Item updated'})
 
@@ -270,6 +276,15 @@ def add_to_list(item_id):
     """Add item back to shopping list"""
     db.add_to_list(item_id)
     return jsonify({'message': 'Added to list'})
+
+@app.route('/api/items/<int:item_id>/not-available', methods=['POST'])
+@require_auth
+def mark_not_available(item_id):
+    """Mark item as not available - keeps on list but records timestamp"""
+    data = request.json or {}
+    user_id = data.get('user_id')
+    db.record_not_available(item_id, user_id)
+    return jsonify({'message': 'Marked as not available'})
 
 @app.route('/api/items/<int:item_id>/price', methods=['POST'])
 @require_auth
@@ -333,6 +348,17 @@ def remove_user(user_id):
     db.delete_user(user_id)
     return jsonify({'message': 'User deleted'})
 
+@app.route('/api/users/<int:user_id>', methods=['PUT'])
+@require_auth
+def update_user(user_id):
+    """Update a user name"""
+    data = request.json
+    name = data.get('name', '').strip()
+    if not name:
+        return jsonify({'error': 'User name is required'}), 400
+    db.update_user(user_id, name)
+    return jsonify({'message': 'User updated'})
+
 # Store endpoints
 @app.route('/api/stores', methods=['GET'])
 @require_auth
@@ -361,6 +387,17 @@ def remove_store(store_id):
     """Delete a store"""
     db.delete_store(store_id)
     return jsonify({'message': 'Store deleted'})
+
+@app.route('/api/stores/<int:store_id>', methods=['PUT'])
+@require_auth
+def update_store(store_id):
+    """Update a store name"""
+    data = request.json
+    name = data.get('name', '').strip()
+    if not name:
+        return jsonify({'error': 'Store name is required'}), 400
+    db.update_store(store_id, name)
+    return jsonify({'message': 'Store updated'})
 
 @app.route('/api/items/<int:item_id>/store', methods=['PUT'])
 @require_auth

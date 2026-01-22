@@ -87,6 +87,7 @@ def init_db():
                 name TEXT NOT NULL,
                 whole_foods_url TEXT,
                 image_url TEXT,
+                notes TEXT,
                 on_list INTEGER DEFAULT 1,
                 store_id INTEGER REFERENCES stores(id),
                 added_by INTEGER REFERENCES users(id),
@@ -95,6 +96,11 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        # Add notes column if it doesn't exist (for existing tables)
+        try:
+            cursor.execute("ALTER TABLE items ADD COLUMN notes TEXT")
+        except:
+            pass
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS purchases (
                 id SERIAL PRIMARY KEY,
@@ -102,9 +108,15 @@ def init_db():
                 user_id INTEGER REFERENCES users(id),
                 purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 price REAL,
-                on_sale INTEGER DEFAULT 0
+                on_sale INTEGER DEFAULT 0,
+                not_available INTEGER DEFAULT 0
             )
         """)
+        # Add not_available column if it doesn't exist (for existing tables)
+        try:
+            cursor.execute("ALTER TABLE purchases ADD COLUMN not_available INTEGER DEFAULT 0")
+        except:
+            pass
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS price_history (
                 id SERIAL PRIMARY KEY,
@@ -198,13 +210,17 @@ def init_db():
         """)
 
         # Add columns to existing SQLite tables if they don't exist
-        for col in ['store_id INTEGER', 'added_by INTEGER', 'occasional INTEGER DEFAULT 0', 'target_frequency INTEGER', 'image_url TEXT']:
+        for col in ['store_id INTEGER', 'added_by INTEGER', 'occasional INTEGER DEFAULT 0', 'target_frequency INTEGER', 'image_url TEXT', 'notes TEXT']:
             try:
                 cursor.execute(f"ALTER TABLE items ADD COLUMN {col}")
             except sqlite3.OperationalError:
                 pass
         try:
             cursor.execute("ALTER TABLE purchases ADD COLUMN user_id INTEGER")
+        except sqlite3.OperationalError:
+            pass
+        try:
+            cursor.execute("ALTER TABLE purchases ADD COLUMN not_available INTEGER DEFAULT 0")
         except sqlite3.OperationalError:
             pass
 
@@ -392,7 +408,7 @@ def get_item(item_id):
         )
         return fetchone_as_dict(cursor, is_postgres)
 
-def update_item(item_id, name=None, whole_foods_url=None, image_url=None, on_list=None):
+def update_item(item_id, name=None, whole_foods_url=None, image_url=None, on_list=None, notes=None):
     with get_db() as (conn, is_postgres):
         updates = []
         params = []
@@ -405,10 +421,13 @@ def update_item(item_id, name=None, whole_foods_url=None, image_url=None, on_lis
             params.append(whole_foods_url)
         if image_url is not None:
             updates.append("image_url = ?")
-            params.append(image_url)
+            params.append(image_url if image_url else None)
         if on_list is not None:
             updates.append("on_list = ?")
             params.append(1 if on_list else 0)
+        if notes is not None:
+            updates.append("notes = ?")
+            params.append(notes if notes else None)
 
         if updates:
             params.append(item_id)
@@ -428,10 +447,19 @@ def record_purchase(item_id, price=None, on_sale=False, user_id=None):
     """Record a purchase and remove item from list"""
     with get_db() as (conn, is_postgres):
         execute_query(conn, is_postgres,
-            "INSERT INTO purchases (item_id, price, on_sale, user_id) VALUES (?, ?, ?, ?)",
+            "INSERT INTO purchases (item_id, price, on_sale, user_id, not_available) VALUES (?, ?, ?, ?, 0)",
             (item_id, price, 1 if on_sale else 0, user_id)
         )
         execute_query(conn, is_postgres, "UPDATE items SET on_list = 0 WHERE id = ?", (item_id,))
+        conn.commit()
+
+def record_not_available(item_id, user_id=None):
+    """Record that item was not available - keeps item on list"""
+    with get_db() as (conn, is_postgres):
+        execute_query(conn, is_postgres,
+            "INSERT INTO purchases (item_id, user_id, not_available) VALUES (?, ?, 1)",
+            (item_id, user_id)
+        )
         conn.commit()
 
 def add_to_list(item_id):
@@ -509,6 +537,11 @@ def delete_user(user_id):
         execute_query(conn, is_postgres, "DELETE FROM users WHERE id = ?", (user_id,))
         conn.commit()
 
+def update_user(user_id, name):
+    with get_db() as (conn, is_postgres):
+        execute_query(conn, is_postgres, "UPDATE users SET name = ? WHERE id = ?", (name, user_id))
+        conn.commit()
+
 # Store management
 def add_store(name):
     with get_db() as (conn, is_postgres):
@@ -529,6 +562,11 @@ def get_all_stores():
 def delete_store(store_id):
     with get_db() as (conn, is_postgres):
         execute_query(conn, is_postgres, "DELETE FROM stores WHERE id = ?", (store_id,))
+        conn.commit()
+
+def update_store(store_id, name):
+    with get_db() as (conn, is_postgres):
+        execute_query(conn, is_postgres, "UPDATE stores SET name = ? WHERE id = ?", (name, store_id))
         conn.commit()
 
 def change_item_store(item_id, new_store_id, changed_by=None):
