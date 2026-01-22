@@ -229,8 +229,8 @@ def get_all_items():
             SELECT i.*,
                    COUNT(p.id) as purchase_count,
                    MAX(p.purchased_at) as last_purchased,
-                   ph.price as current_price,
-                   ph.on_sale
+                   MAX(ph.price) as current_price,
+                   MAX(ph.on_sale) as on_sale
             FROM items i
             LEFT JOIN purchases p ON p.item_id = i.id
             LEFT JOIN price_history ph ON ph.id = (
@@ -258,8 +258,8 @@ def get_items_on_list():
             SELECT i.*,
                    COUNT(p.id) as purchase_count,
                    MAX(p.purchased_at) as last_purchased,
-                   ph.price as current_price,
-                   ph.on_sale,
+                   MAX(ph.price) as current_price,
+                   MAX(ph.on_sale) as on_sale,
                    s.name as store_name,
                    u.name as added_by_name
             FROM items i
@@ -291,8 +291,8 @@ def get_frequent_items():
             SELECT i.*,
                    COUNT(p.id) as purchase_count,
                    MAX(p.purchased_at) as last_purchased,
-                   ph.price as current_price,
-                   ph.on_sale,
+                   MAX(ph.price) as current_price,
+                   MAX(ph.on_sale) as on_sale,
                    s.name as store_name,
                    u.name as added_by_name
             FROM items i
