@@ -97,10 +97,12 @@ def init_db():
             )
         """)
         # Add notes column if it doesn't exist (for existing tables)
+        cursor.execute("SAVEPOINT add_notes_col")
         try:
             cursor.execute("ALTER TABLE items ADD COLUMN notes TEXT")
         except:
-            pass
+            cursor.execute("ROLLBACK TO SAVEPOINT add_notes_col")
+        cursor.execute("RELEASE SAVEPOINT add_notes_col")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS purchases (
                 id SERIAL PRIMARY KEY,
@@ -113,10 +115,12 @@ def init_db():
             )
         """)
         # Add not_available column if it doesn't exist (for existing tables)
+        cursor.execute("SAVEPOINT add_na_col")
         try:
             cursor.execute("ALTER TABLE purchases ADD COLUMN not_available INTEGER DEFAULT 0")
         except:
-            pass
+            cursor.execute("ROLLBACK TO SAVEPOINT add_na_col")
+        cursor.execute("RELEASE SAVEPOINT add_na_col")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS price_history (
                 id SERIAL PRIMARY KEY,
