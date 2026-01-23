@@ -171,9 +171,7 @@
             font-weight: 600;
             color: #333;
             margin-bottom: 3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            word-break: break-word;
         }
 
         .item-meta {
@@ -209,13 +207,13 @@
         }
 
         .bought-btn {
-            padding: 8px 16px;
+            padding: 8px 12px;
             background: #6ab88c;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 600;
             transition: all 0.2s;
             white-space: nowrap;
@@ -984,8 +982,8 @@
             }
 
             .bought-btn {
-                padding: 8px 14px;
-                font-size: 13px;
+                padding: 6px 10px;
+                font-size: 16px;
                 min-height: 36px;
             }
 
@@ -1068,22 +1066,13 @@
 
         /* Extra small screens */
         @media (max-width: 380px) {
-            .list-item {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
             .item-info {
-                width: 100%;
-            }
-
-            .bought-btn {
-                width: 100%;
-                margin-top: 10px;
+                flex: 1;
+                min-width: 0;
             }
 
             .item-actions {
-                justify-content: space-between;
+                justify-content: flex-end;
             }
         }
     </style>
@@ -1798,7 +1787,7 @@
                                     </div>
                                 </div>
                                 <button class="na-btn" onclick="markNotAvailable(${item.id})">N/A</button>
-                                <button class="bought-btn" onclick="markBought(${item.id})">Bought ✓</button>
+                                <button class="bought-btn" onclick="markBought(${item.id})">✓</button>
                             </div>
                             <div class="item-details" id="details-${item.id}">
                                 <div class="item-details-row">
